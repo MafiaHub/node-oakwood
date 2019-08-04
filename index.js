@@ -1,5 +1,6 @@
 const nanomsg = require('nanomsg')
-const msgpack = require('msgpack-lite')
+const msgpack = require('msgpack-typed-numbers')
+const Long = require('long')
 
 const createClient = (options = {}) => {
     const oak = {
@@ -45,26 +46,28 @@ const createClient = (options = {}) => {
             return;
 
         const [fn, args] = oak.__queue[0]
-        const encoder = new msgpack.Encoder();
-
-        encoder.write(fn)
-        encoder.write(args)
 
         oak.__working = true
-        oak.__outbound.send(encoder.read())
+        oak.__outbound.send(msgpack.encode([fn, args]))
     }
 
     const call = async (fn, ...args) => {
         let newargs = args;
 
+        const conv = number => {
+            if (typeof number !== 'number') {
+                return number;
+            }
+
+            return new msgpack.Float(number)
+        }
+
         /* handle conversion of arrays into floats */
         newargs = newargs.map(arg => {
-            return Array.isArray(arg) ? arg.map(v => v + v * 0.00000001) : arg
+            return Array.isArray(arg) ? arg.map(conv) : arg
         })
 
-        newargs = newargs.map(v => {
-            return typeof v == 'number' ? v + v * 0.0000000001 : v
-        })
+        newargs = newargs.map(conv)
 
         /* enrich string arguments with additional length args */
         newargs = newargs.reduce((c, arg) => {

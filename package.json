@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/MafiaHub/node-oakwood#readme",
   "dependencies": {
-    "msgpack-lite": "^0.1.26",
+    "msgpack-typed-numbers": "0.0.1",
     "nanomsg": "^4.1.0"
   }
 }
