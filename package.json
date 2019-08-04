@@ -1,0 +1,23 @@
+{
+  "name": "oakwood",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MafiaHub/node-oakwood.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/MafiaHub/node-oakwood/issues"
+  },
+  "homepage": "https://github.com/MafiaHub/node-oakwood#readme",
+  "dependencies": {
+    "msgpack-lite": "^0.1.26",
+    "nanomsg": "^4.1.0"
+  }
+}
