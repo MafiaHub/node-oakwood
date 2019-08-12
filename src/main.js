@@ -1,6 +1,9 @@
 const nanomsg = require('nanomsg')
 const msgpack = require('msgpack-typed-numbers')
-const Long = require('long')
+const cleanup = require('node-cleanup')
+const Long    = require('long')
+
+const __oakclients = []
 
 const createClient = (options = {}) => {
     const oak = {
@@ -86,8 +89,8 @@ const createClient = (options = {}) => {
             oak[method.replace('oak_', '')] = call.bind(this, method)
         })
 
-        if ("start" in oak.__events) {
-            oak.__events["start"].map(fn => fn.apply({}))
+        if ("script_start" in oak.__events) {
+            oak.__events["script_start"].map(fn => fn.apply({}))
         }
     })
 
@@ -118,8 +121,16 @@ const createClient = (options = {}) => {
         oak.logn(args.map(a => typeof a != 'string' ? JSON.stringify(a) : a).join(' ') + '\n')
     }
 
+    __oakclients.push(oak)
+
     return oak;
 }
+
+cleanup(() => __oakclients.map(oak => {
+    if ("script_stop" in oak.__events) {
+        oak.__events["script_stop"].map(fn => fn.apply({}))
+    }
+}))
 
 module.exports = {
     createClient,
