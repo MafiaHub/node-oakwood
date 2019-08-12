@@ -1,3 +1,4 @@
+const assert = require('assert')
 const {createClient} = require('./')
 
 const oak = createClient({
@@ -10,9 +11,10 @@ const oak = createClient({
 oak.event('start', async () => {
     console.log("[info] connected to the server")
     oak.log("[info] hello world from nodejs")
+})
 
-    oak.player_health_set(0, 100)
-    oak.vehicle_position_set(0, [-10, -1764.23233, 0])
+oak.event('stop', async () => {
+    console.log('[info] stop has been called')
 })
 
 /* general player events */

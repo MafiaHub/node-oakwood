@@ -1,15 +1,17 @@
 const nanomsg = require('nanomsg')
 const msgpack = require('msgpack-typed-numbers')
-const cleanup = require('node-cleanup')
 const Long    = require('long')
+const timeout = require('p-timeout')
 
-const __oakclients = []
+const client = []
 
 const createClient = (options = {}) => {
     const oak = {
         __queue: [],
         __events: {},
         __commands: {},
+        __uniqueid: null,
+        __heartbeat: null,
         __working: false,
     };
 
@@ -77,22 +79,17 @@ const createClient = (options = {}) => {
             return c.concat(typeof arg == "string" ? [arg, arg.length] : [arg])
         }, [])
 
-        return new Promise((resolve, reject) => {
+        const promise = new Promise((resolve, reject) => {
             oak.__queue.push([fn, newargs, resolve, reject])
             handle()
         })
+
+        return timeout(promise, options.timeout || 500)
     }
 
-    /* initialize first connection, and load methods */
-    call('oak__methods').then(data => {
-        data.split(';').map(method => {
-            oak[method.replace('oak_', '')] = call.bind(this, method)
-        })
-
-        if ("script_start" in oak.__events) {
-            oak.__events["script_start"].map(fn => fn.apply({}))
-        }
-    })
+    const trigger = name => oak.__events.hasOwnProperty(name)
+        ? oak.__events[name].map(fn => fn.apply({}))
+        : null
 
     /* attach event handler impl */
     oak.event = (name, callback) => {
@@ -121,16 +118,35 @@ const createClient = (options = {}) => {
         oak.logn(args.map(a => typeof a != 'string' ? JSON.stringify(a) : a).join(' ') + '\n')
     }
 
-    __oakclients.push(oak)
+    oak.__heartbeat = setInterval(() => {
+        call('oak__heartbeat').then(async (uid) => {
+            if (oak.__uniqueid == uid)
+                return;
 
+            if (oak.__uniqueid !== null)
+                trigger("stop")
+
+            oak.__uniqueid = uid;
+
+            /* initialize first connection, and load methods */
+            const data = await call('oak__methods')
+
+            data.split(';').map(method => {
+                oak[method.replace('oak_', '')] = call.bind(this, method)
+            })
+
+            trigger("start")
+        }).catch(err => {
+            if (oak.__uniqueid !== null) {
+                oak.__uniqueid = null;
+                trigger('stop')
+            }
+        })
+    }, options.heartbeatInterval || 1000)
+
+    client.push(oak)
     return oak;
 }
-
-cleanup(() => __oakclients.map(oak => {
-    if ("script_stop" in oak.__events) {
-        oak.__events["script_stop"].map(fn => fn.apply({}))
-    }
-}))
 
 module.exports = {
     createClient,
