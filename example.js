@@ -19,70 +19,70 @@ oak.event('stop', async () => {
 
 /* general player events */
 
-const spawnplayer = pid => {
-    oak.player_position_set(pid, [-1774.59301758, -4.88487052917, -2.40491962433])
-    oak.player_health_set(pid, 200)
-    oak.player_spawn(pid)
+const spawnPlayer = pid => {
+    oak.playerPositionSet(pid, [-1774.59301758, -4.88487052917, -2.40491962433])
+    oak.playerHealthSet(pid, 200)
+    oak.playerSpawn(pid)
 }
 
-oak.event('player_connect', async pid => {
+oak.event('playerConnect', async pid => {
     console.log('[info] player connected', pid)
-    spawnplayer(pid)
+    spawnPlayer(pid)
 })
 
-oak.event('player_death', async pid => {
+oak.event('playerDeath', async pid => {
     console.log('[info] player connected', pid)
-    spawnplayer(pid)
+    spawnPlayer(pid)
 })
 
-oak.event('player_disconnect', pid => {
+oak.event('playerDisconnect', pid => {
     console.log('[info] player disconnected', pid)
 })
 
 /* chat system */
 
-oak.event('player_chat', async (pid, text) => {
+oak.event('playerChat', async (pid, text) => {
     /* skip messages with commands */
     if (text.indexOf('/') === 0){
         return;
     }
 
     /* get author player name */
-    const name = await oak.player_name_get(pid)
+    const name = await oak.playerNameGet(pid)
     const msg = `[chat] ${name}: ${text}`
 
     /* log stuff into our local console */
     console.log(msg)
 
     /* send messages to each clients' chat windows */
-    oak.chat_broadcast(msg)
+    oak.chatBroadcast(msg)
 })
 
 /* helper commands */
 
 oak.cmd('spawn', async pid => {
-    spawnplayer(pid)
+    spawnPlayer(pid)
 })
 
 oak.cmd('help', async (pid) => {
     console.log('player asks for help', pid)
-    oak.chat_send('[info] sorry, we cant help you')
+    oak.chatSend(pid, '[info] sorry, we cant help you')
 })
 
 oak.cmd('goto', async (pid, targetid) => {
     const tid = parseInt(targetid)
 
     if (tid === NaN) {
-        return oak.chat_send(pid, `[error] provided argument should be a valid number`)
+        return oak.chatSend(pid, `[error] provided argument should be a valid number`)
     }
 
-    if (await oak.player_invalid(tid)) {
-        return oak.chat_send(pid, `[error] player you provided was not found`)
+    if (await oak.playerInvalid(tid)) {
+        return oak.chatSend(pid, `[error] player you provided was not found`)
     }
 
     /* get target position */
-    const pos = await oak.player_position_get(tid)
+    const pos = await oak.playerPositionGet(tid)
 
     /* set our player position */
-    oak.player_position_set(pid, pos)
+    oak.playerPositionSet(pid, pos)
 })

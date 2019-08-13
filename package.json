@@ -1,10 +1,10 @@
 {
   "name": "oakwood",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon example.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/MafiaHub/node-oakwood#readme",
   "dependencies": {
+    "camel-case": "^3.0.0",
     "msgpack-typed-numbers": "0.0.1",
     "nanomsg": "^4.1.0",
     "p-timeout": "^3.1.0"

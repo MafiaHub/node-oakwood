@@ -1,4 +1,4 @@
-const models = [
+module.exports = [
     ["Bolt Ace Coupe Blue",                 "fordtco00.i3d"],  // 0
     ["Bolt Ace Coupe Dark Blue",            "fordtco01.i3d"],  // 1
     ["Bolt Ace Coupe Brown",                "fordtco02.i3d"],  // 2
@@ -211,16 +211,3 @@ const models = [
     ["Traktor",                             "traktor.i3d"],
     ["Xeon",                                "xedos00.i3d"],
 ];
-
-const vehicleModel = id => {
-    if (id < 0 || id > models.length) {
-        throw new Error('You must provide a valid id')
-    }
-
-    return models[id][1]
-}
-
-module.exports = {
-    vehicleModel,
-    vehicleModelList: models,
-}

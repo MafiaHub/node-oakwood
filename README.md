@@ -21,30 +21,30 @@ oak.event('start', async () => {
     oak.log("[info] hello world from nodejs")
 })
 
-oak.event('player_connect', async pid => {
+oak.event('playerConnect', async pid => {
     console.log('[info] player connected', pid)
 
-    oak.player_position_set(pid, [-1774.59301758, -4.88487052917, -2.40491962433])
-    oak.player_health_set(pid, 200)
-    oak.player_spawn(pid)
+    oak.playerPositionSet(pid, [-1774.59301758, -4.88487052917, -2.40491962433])
+    oak.playerHealthSet(pid, 200)
+    oak.playerSpawn(pid)
 })
 
 oak.cmd('goto', async (pid, targetid) => {
     const tid = parseInt(targetid)
 
     if (tid === NaN) {
-        return oak.chat_send(pid, `[error] provided argument should be a valid number`)
+        return oak.chatSend(pid, `[error] provided argument should be a valid number`)
     }
 
-    if (await oak.player_invalid(tid)) {
-        return oak.chat_send(pid, `[error] player you provided was not found`)
+    if (await oak.playerInvalid(tid)) {
+        return oak.chatSend(pid, `[error] player you provided was not found`)
     }
 
     /* get target position */
-    const pos = await oak.player_position_get(tid)
+    const pos = await oak.playerPositionGet(tid)
 
     /* set our player position */
-    oak.player_position_set(pid, pos)
+    oak.playerPositionSet(pid, pos)
 })
 ```
 

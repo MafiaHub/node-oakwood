@@ -1,9 +1,8 @@
-const nanomsg = require('nanomsg')
-const msgpack = require('msgpack-typed-numbers')
-const Long    = require('long')
-const timeout = require('p-timeout')
-
-const client = []
+const nanomsg   = require('nanomsg')
+const msgpack   = require('msgpack-typed-numbers')
+const Long      = require('long')
+const timeout   = require('p-timeout')
+const camelCase = require('camel-case')
 
 const createClient = (options = {}) => {
     const oak = {
@@ -106,7 +105,7 @@ const createClient = (options = {}) => {
     }
 
     /* built-in chat->command handler */
-    oak.event('player_chat', (pid, msg) => {
+    oak.event('playerChat', (pid, msg) => {
         if (msg.indexOf('/') === 0) {
             const [cmd, ...args] = msg.replace('/', '').split(' ')
             if (!oak.__commands.hasOwnProperty(cmd)) return
@@ -132,7 +131,7 @@ const createClient = (options = {}) => {
             const data = await call('oak__methods')
 
             data.split(';').map(method => {
-                oak[method.replace('oak_', '')] = call.bind(this, method)
+                oak[camelCase(method.replace('oak_', ''))] = call.bind(this, method)
             })
 
             trigger("start")
@@ -144,10 +143,7 @@ const createClient = (options = {}) => {
         })
     }, options.heartbeatInterval || 1000)
 
-    client.push(oak)
     return oak;
 }
 
-module.exports = {
-    createClient,
-}
+module.exports = createClient
