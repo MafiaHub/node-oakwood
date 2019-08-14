@@ -75,7 +75,7 @@ const createClient = (options = {}) => {
 
         /* enrich string arguments with additional length args */
         newargs = newargs.reduce((c, arg) => {
-            return c.concat(typeof arg == "string" ? [arg, arg.length] : [arg])
+            return c.concat(typeof arg == "string" ? [`${arg}\0`, arg.length] : [arg])
         }, [])
 
         const promise = new Promise((resolve, reject) => {
