@@ -86,8 +86,8 @@ const createClient = (options = {}) => {
         return timeout(promise, options.timeout || 500)
     }
 
-    const trigger = name => oak.__events.hasOwnProperty(name)
-        ? oak.__events[name].map(fn => fn.apply({}))
+    const trigger = (name, ...args) => oak.__events.hasOwnProperty(name)
+        ? oak.__events[name].map(fn => fn.apply({}, args))
         : null
 
     /* attach event handler impl */
@@ -106,9 +106,15 @@ const createClient = (options = {}) => {
 
     /* built-in chat->command handler */
     oak.event('playerChat', (pid, msg) => {
-        if (msg.indexOf('/') === 0) {
+        msg = msg.trim()
+
+        if (msg.startsWith('/')) {
             const [cmd, ...args] = msg.replace('/', '').split(' ')
-            if (!oak.__commands.hasOwnProperty(cmd)) return
+
+            if (!oak.__commands.hasOwnProperty(cmd)) {
+                return trigger('unknownCommand', msg)
+            }
+
             oak.__commands[cmd].apply({}, [pid].concat(args))
         }
     })
