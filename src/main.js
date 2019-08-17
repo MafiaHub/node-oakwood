@@ -112,7 +112,7 @@ const createClient = (options = {}) => {
             const [cmd, ...args] = msg.replace('/', '').split(' ')
 
             if (!oak.__commands.hasOwnProperty(cmd)) {
-                return trigger('unknownCommand', msg)
+                return trigger('unknownCommand', pid, msg)
             }
 
             oak.__commands[cmd].apply({}, [pid].concat(args))
