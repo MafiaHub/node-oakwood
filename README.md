@@ -9,7 +9,7 @@ While getting `oakwood` package is as simple as installing it via `npm`, it requ
 ### Ubuntu
 
 To install `oakwood` package on Ubuntu, you need to install prerequisite system packages we use natively:
-1. `$ apt install nanomsg`
+1. `$ apt install python2.7`
 2. `$ apt install libnanomsg-dev`
 3. Follow the rest of the guide.
 
