@@ -14,7 +14,7 @@ const createClient = (options = {}) => {
         __working: false,
     };
 
-    oak.__inbound = nanomsg.socket('sub')
+    oak.__inbound = nanomsg.socket('respondent')
     oak.__outbound = nanomsg.socket('req')
 
     oak.__inbound.connect(options.inbound || 'ipc://oakwood-inbound')
