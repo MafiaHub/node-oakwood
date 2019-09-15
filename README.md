@@ -4,9 +4,33 @@ A library that connects to your server and allows you to write custom gamemodes/
 
 ## Instructions
 
-All you need to to is to install the oakwood dependency, and use `require` it into your nodejs project.
+While getting `oakwood` package is as simple as installing it via `npm`, it requires a specific dependencies to be met depending on a platform:
 
+### Ubuntu
+
+To install `oakwood` package on Ubuntu, you need to install prerequisite system packages we use natively:
+1. `$ apt install python2.7`
+2. `$ apt install libnanomsg-dev`
+3. Follow the rest of the guide.
+
+### Windows
+
+On Windows, we need to make sure essential build tools are installed on the machine:
+1. `npm install --global windows-build-tools`
+2. Then we can safely follow the rest of the guide.
+
+### Setup
+
+First, we need to install the oakwood package. Having met the system dependencies, oakwood package should be successfully built and installed to your folder via:
 ```$ npm i oakwood --save```
+
+Afterwards, you can simply create a new file such as `freeride.js`, copy an example from below and launch it to start the gamemode. As you can see, using the oakwood package is just matter of `require`-ing specific methods or resources you need.
+
+Don't forget to set up your connection strings on both sides so that your gamemode can communicate with the server!
+
+## Documentation
+
+You can visit the following [docs page](https://docs.oakwood-mp.net/public-api) to learn more about the API we use. You can also find an interesting read about how this gamemode works behind the scene here.
 
 ## Example
 
