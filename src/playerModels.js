@@ -1,7 +1,6 @@
 module.exports = [
     ["Tommy", "Tommy.i3d"],
     ["TommyBOXER", "TommyBOXER.i3d"],
-    ["TommyCOAT", "TommyCOAT.i3d"],
     ["TommyCOATHAT", "TommyCOATHAT.i3d"],
     ["TommyDELNIK", "TommyDELNIK.i3d"],
     ["TommyDELNIKHIGH", "TommyDELNIKHIGH.i3d"],
@@ -107,7 +106,6 @@ module.exports = [
     ["Hoolig04", "Hoolig04.i3d"],
     ["Hoolig05", "Hoolig05.i3d"],
     ["Hoolig06", "Hoolig06.i3d"],
-    ["I04Delnik01+", "I04Delnik01+.i3d"],
     ["I04Delnik01", "I04Delnik01.i3d"],
     ["Joe", "Joe.i3d"],
     ["Kasar", "Kasar.i3d"],
@@ -295,14 +293,7 @@ module.exports = [
     ["Sarah2HIGH", "Sarah2HIGH.i3d"],
     ["Sarah2HIGHnaha", "Sarah2HIGHnaha.i3d"],
     ["Sarah2LOW", "Sarah2LOW.i3d"],
-    ["Serv01", "Serv01.i3d"],
     ["ZenaRad01", "ZenaRad01.i3d"],
-    ["gab", "gab.i3d"],
-
-    ["ShadowGirlHIGH", "ShadowGirlHIGH.i3d"],
-    ["ShadowMan", "ShadowMan.i3d"],
-    ["ShadowManHIGH", "ShadowManHIGH.i3d"],
-    ["ShadowManLOW2", "ShadowManLOW2.i3d"],
     ["UfoPanak", "UfoPanak.i3d"],
     ["invisible", "invisible.i3d"],
 ]
