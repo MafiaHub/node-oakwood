@@ -38,6 +38,8 @@ const createClient = (options = {}) => {
     /* handle subscription events stream */
     oak.__inbound.on('data', buffer => {
         const [name, ...args] = msgpack.decode(buffer)
+        oak.__inbound.send('ok')
+
         if (!oak.__events.hasOwnProperty(name)) return
         oak.__events[name].map(handler => handler.apply({}, args))
     })
