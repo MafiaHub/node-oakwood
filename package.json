@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon example.js"
+    "dev": "nodemon example.js",
+    "release": "release-it",
+    "release-patch": "release-it patch --ci",
+    "release-minor": "release-it minor --ci",
+    "release-major": "release-it major --ci",
   },
   "repository": {
     "type": "git",
@@ -21,5 +25,8 @@
     "msgpack-typed-numbers": "0.0.1",
     "nanomsg": "^4.1.0",
     "p-timeout": "^3.2.0"
+  },
+  "devDependencies": {
+    "release-it": "^12.4.1"
   }
 }
